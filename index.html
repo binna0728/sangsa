@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2712%27%20fill%3D%27%2312100e%27%2F%3E%3Ctext%20x%3D%2732%27%20y%3D%2746%27%20font-size%3D%2742%27%20text-anchor%3D%27middle%27%20fill%3D%27%23d9b24c%27%20font-family%3D%27serif%27%3E%E7%9B%B8%3C%2Ftext%3E%3C%2Fsvg%3E">
+<title>상사(相思): 청평사의 뱀</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Song+Myung&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cheong:#2f6fe4; --jeok:#e0342c; --hwang:#e8b53a; --baek:#f2f2f2; --heuk:#6d5bd0;
+  --ink:#0b0a0f; --paper:#efe6d2; --gold:#d9b24c; --red:#b8222b;
+  --serif:'Nanum Myeongjo','Gowun Batang','Song Myung',"Apple SD Gothic Neo",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:var(--serif);color:var(--paper);overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000}
+#stage{position:relative;flex:none;width:1600px;height:900px;transform-origin:center;overflow:hidden;background:#000;user-select:none}
+.layer{position:absolute;inset:0}
+#bgA,#bgB{background-size:cover;background-position:center;transition:opacity .9s ease;will-change:opacity,transform}
+#bgB{opacity:0}
+.kb{animation:kenburns 22s ease-in-out infinite alternate}
+@keyframes kenburns{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.09) translate(-1.2%,-0.8%)}}
+#video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;display:none}
+#vignette{pointer-events:none;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+#grain{pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.9'/></svg>")}
+#flash{pointer-events:none;background:#fff;opacity:0}
+#fade{pointer-events:none;background:#000;opacity:1;transition:opacity .8s ease}
+.hidden{display:none!important}
+
+/* ---------- title ---------- */
+#title{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:0 0 0 110px;background:linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.15) 45%,rgba(0,0,0,0) 70%)}
+#title .han{font-size:150px;font-weight:800;letter-spacing:.08em;line-height:1;color:#fff;text-shadow:0 0 30px rgba(224,52,44,.6),0 4px 0 #6b0e14;font-family:var(--serif)}
+#title .han span{color:#ffd166}
+#title .sub{font-size:40px;letter-spacing:.35em;margin-top:14px;color:#f4e9d2;text-shadow:0 2px 12px #000}
+#title .tag{margin-top:10px;font-size:18px;letter-spacing:.2em;color:#cbb790;opacity:.9}
+.menu{margin-top:54px;display:flex;flex-direction:column;gap:14px}
+.btn{font-family:var(--serif);font-size:26px;letter-spacing:.25em;padding:14px 38px;border:1px solid rgba(233,210,150,.55);background:rgba(10,8,12,.55);color:#f3e6c8;cursor:pointer;backdrop-filter:blur(3px);transition:all .18s;position:relative;text-align:left;min-width:330px}
+.btn:hover,.btn.on{background:rgba(184,34,43,.75);border-color:#ffd166;color:#fff;transform:translateX(8px)}
+.btn:before{content:"";position:absolute;left:14px;top:50%;width:6px;height:6px;background:var(--gold);transform:translateY(-50%) rotate(45deg);opacity:0;transition:opacity .2s}
+.btn:hover:before,.btn.on:before{opacity:1}
+.btn.small{font-size:18px;padding:9px 24px;min-width:0;letter-spacing:.15em}
+.btn:disabled{opacity:.35;cursor:default;transform:none}
+#credit{position:absolute;right:28px;bottom:20px;font-size:14px;color:#c9b88f;letter-spacing:.15em;text-align:right;line-height:1.7;opacity:.85}
+
+/* ---------- chapter card ---------- */
+#chapter{display:flex;align-items:center;justify-content:center;background:#050408}
+#chapter .card{text-align:center;position:relative}
+#chapter .n{font-size:30px;letter-spacing:.6em;color:#b8222b;margin-bottom:20px}
+#chapter .t{font-size:78px;font-weight:800;letter-spacing:.12em;color:#f5ecd8;text-shadow:0 0 40px rgba(217,178,76,.25)}
+#chapter .line{width:0;height:2px;background:linear-gradient(90deg,transparent,#d9b24c,transparent);margin:28px auto 0;animation:grow 1.6s ease forwards}
+@keyframes grow{to{width:520px}}
+#chapter .seal{position:absolute;right:-90px;top:-40px;width:64px;height:64px;border:3px solid #b8222b;color:#b8222b;font-size:30px;line-height:58px;transform:rotate(-8deg);font-weight:800}
+
+/* ---------- dialog ---------- */
+#dlg{pointer-events:none}
+.por{position:absolute;bottom:0;height:820px;width:auto;opacity:0;transition:opacity .45s,transform .45s,filter .3s;filter:drop-shadow(0 0 28px rgba(0,0,0,.7));will-change:transform}
+.por.left{left:40px;transform:translateX(-30px)}
+.por.right{right:40px;transform:translateX(30px) scaleX(-1)}
+.por.show{opacity:1}
+.por.left.show{transform:translateX(0)}
+.por.right.show{transform:translateX(0) scaleX(-1)}
+.por.dim{filter:brightness(.45) drop-shadow(0 0 28px rgba(0,0,0,.7))}
+.por.pain{animation:tremble .09s infinite}
+@keyframes tremble{0%{transform:translate(0,0)}50%{transform:translate(3px,-2px)}100%{transform:translate(-2px,1px)}}
+#box{position:absolute;left:110px;right:110px;bottom:56px;min-height:210px;padding:36px 54px 34px;background:linear-gradient(180deg,rgba(8,7,12,.78),rgba(8,7,12,.92));border:1px solid rgba(217,178,76,.45);box-shadow:0 20px 60px rgba(0,0,0,.6);pointer-events:auto;cursor:pointer}
+#box:before,#box:after{content:"";position:absolute;width:22px;height:22px;border:2px solid var(--gold)}
+#box:before{left:-1px;top:-1px;border-right:0;border-bottom:0}
+#box:after{right:-1px;bottom:-1px;border-left:0;border-top:0}
+#name{position:absolute;left:34px;top:-24px;padding:6px 26px;font-size:24px;letter-spacing:.2em;background:#0b0a0f;border:1px solid var(--gold);color:#fff}
+#name.hide{display:none}
+#text{font-size:31px;line-height:1.75;letter-spacing:.02em;color:#f5edda;text-shadow:0 1px 2px #000;min-height:110px;white-space:pre-wrap}
+#text.nar{color:#e8dcc4;font-style:normal;text-align:center;padding:10px 40px}
+#text.sys{color:#f3e3a3;font-size:26px;text-align:center}
+#next{position:absolute;right:34px;bottom:16px;font-size:16px;letter-spacing:.3em;color:#d9b24c;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+#tools{position:absolute;right:110px;top:22px;display:flex;gap:10px;pointer-events:auto}
+.tb{font-family:var(--serif);font-size:15px;letter-spacing:.2em;padding:7px 14px;border:1px solid rgba(233,210,150,.4);background:rgba(0,0,0,.5);color:#e9d9b0;cursor:pointer}
+.tb.on{background:rgba(184,34,43,.7);color:#fff}
+#caption{position:absolute;left:0;right:0;bottom:70px;text-align:center;font-size:30px;letter-spacing:.15em;color:#f5edda;text-shadow:0 2px 14px #000,0 0 30px #000;pointer-events:none;opacity:0;transition:opacity 1s}
+#caption.show{opacity:1}
+#skip{position:absolute;right:40px;bottom:30px;pointer-events:auto}
+
+/* ---------- battle ---------- */
+#battle{pointer-events:auto}
+#bcanvas{position:absolute;inset:0;width:100%;height:100%}
+#bui{position:absolute;inset:0;pointer-events:none}
+.hud{position:absolute;top:34px;width:560px}
+.hud.l{left:60px}.hud.r{right:60px;text-align:right}
+.hud .nm{font-size:26px;letter-spacing:.2em;margin-bottom:10px;text-shadow:0 2px 8px #000}
+.hud .nm small{font-size:16px;opacity:.75;letter-spacing:.2em;margin-left:10px}
+.bar{height:22px;border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.55);position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;transition:width .25s;box-shadow:0 0 18px currentColor}
+.hud.l .bar i{background:linear-gradient(90deg,#ffd166,#e8b53a);color:#ffd166}
+.hud.r .bar i{background:linear-gradient(90deg,#b8222b,#ff5a4c);color:#ff5a4c;left:auto;right:0}
+.bar b{position:absolute;right:8px;top:0;font-size:15px;line-height:22px;color:#fff;letter-spacing:.1em;font-weight:400}
+.hud.r .bar b{right:auto;left:8px}
+#combo{position:absolute;left:50%;top:150px;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity .2s}
+#combo .c{font-size:74px;font-weight:800;color:#fff;text-shadow:0 0 24px #ffd166,0 4px 0 #b8222b;line-height:1}
+#combo .l{font-size:18px;letter-spacing:.5em;color:#ffd166}
+#judge{position:absolute;left:50%;top:560px;transform:translateX(-50%);font-size:44px;font-weight:800;letter-spacing:.2em;opacity:0;text-shadow:0 0 20px #000}
+#enemyImg{position:absolute;right:120px;bottom:120px;height:640px;filter:drop-shadow(0 0 40px rgba(184,34,43,.55));transition:transform .12s,filter .2s;pointer-events:none}
+#enemyImg.hit{transform:translateX(18px);filter:drop-shadow(0 0 60px #fff) brightness(2)}
+#heroImg{position:absolute;left:40px;bottom:0;height:640px;filter:drop-shadow(0 0 40px rgba(47,111,228,.5));pointer-events:none}
+#lanes{position:absolute;left:50%;bottom:60px;transform:translateX(-50%);display:flex;gap:18px;pointer-events:auto}
+.lk{width:96px;height:96px;border-radius:50%;border:3px solid;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;cursor:pointer;background:rgba(0,0,0,.55);color:#fff;transition:transform .08s;box-shadow:0 0 22px currentColor;position:relative}
+.lk small{position:absolute;bottom:-26px;font-size:14px;letter-spacing:.2em;color:#e9d9b0;font-weight:400}
+.lk:active,.lk.press{transform:scale(.9)}
+#cutin{position:absolute;inset:0;background-size:cover;background-position:center;display:none;pointer-events:none}
+#cutin .t{position:absolute;left:0;right:0;bottom:90px;padding:26px 110px;font-size:66px;font-weight:800;letter-spacing:.12em;color:#fff;text-shadow:0 0 30px #000,0 5px 0 #000;line-height:1.15;background:linear-gradient(90deg,rgba(0,0,0,.75),rgba(0,0,0,.45) 60%,rgba(0,0,0,0));border-left:10px solid #fff}
+#cutin .t small{display:block;font-size:22px;letter-spacing:.5em;opacity:.9;margin-top:6px}
+#bmsg{position:absolute;left:0;right:0;top:44%;text-align:center;font-size:56px;font-weight:800;letter-spacing:.3em;color:#fff;text-shadow:0 0 30px #b8222b,0 4px 0 #000;opacity:0;transition:opacity .4s}
+#bstart{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.55);pointer-events:auto;gap:22px}
+#bstart .en{font-size:42px;letter-spacing:.3em;color:#ff8a7a;text-shadow:0 0 20px #b8222b}
+#bstart .ln{font-size:26px;color:#f5edda;letter-spacing:.1em}
+#bstart .help{font-size:18px;color:#cbb790;letter-spacing:.1em;line-height:1.9;text-align:center;margin-top:10px}
+#bstart .keys{display:flex;gap:14px;margin-top:6px}
+.kk{width:50px;height:50px;border:2px solid;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;box-shadow:0 0 14px currentColor}
+
+/* ---------- choice ---------- */
+#choice{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;background:rgba(0,0,0,.45)}
+#choice .p{font-size:36px;letter-spacing:.1em;color:#f5edda;text-shadow:0 2px 14px #000;margin-bottom:20px;text-align:center;line-height:1.6}
+.ch{width:640px;padding:24px 34px;border:1px solid rgba(217,178,76,.6);background:rgba(8,7,12,.8);cursor:pointer;transition:all .2s;text-align:center}
+.ch:hover{background:rgba(184,34,43,.8);border-color:#ffd166;transform:scale(1.03)}
+.ch .a{font-size:34px;letter-spacing:.2em;color:#fff}
+.ch .b{font-size:18px;color:#d8c9a5;margin-top:8px;letter-spacing:.1em}
+
+/* ---------- credits ---------- */
+#credits{display:flex;align-items:center;justify-content:center;background:#050408;overflow:hidden}
+#credits .roll{text-align:center;animation:roll 34s linear forwards;font-size:24px;line-height:2.1;letter-spacing:.2em;color:#e9d9b0}
+#credits .roll h1{font-size:64px;letter-spacing:.2em;color:#fff;margin-bottom:10px}
+#credits .roll h2{font-size:22px;letter-spacing:.5em;color:#b8222b;margin-top:44px}
+@keyframes roll{from{transform:translateY(60vh)}to{transform:translateY(-120%)}}
+
+/* ---------- load ---------- */
+#load{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050408;gap:20px;z-index:50}
+#load .t{font-size:44px;letter-spacing:.5em;color:#f5edda}
+#load .b{width:420px;height:4px;background:#222}
+#load .b i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}
+#load .s{font-size:16px;letter-spacing:.3em;color:#9b8a66}
+#load .go{margin-top:20px}
+/* ---------- mobile ---------- */
+#rotate{position:fixed;inset:0;z-index:99;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#050408;color:#f5edda;text-align:center;padding:30px}
+#rotate .ph{width:70px;height:120px;border:3px solid #d9b24c;border-radius:12px;animation:rot 1.6s ease-in-out infinite alternate}
+@keyframes rot{from{transform:rotate(0)}to{transform:rotate(-90deg)}}
+#rotate .t{font-size:22px;letter-spacing:.2em}
+#rotate .s{font-size:14px;color:#9b8a66;letter-spacing:.1em;line-height:1.8}
+body.portrait #rotate{display:flex}
+@media (pointer:coarse){
+  .lk{width:126px;height:126px;font-size:40px;border-width:4px}
+  .lk small{bottom:-30px;font-size:16px}
+  #lanes{gap:22px;bottom:70px}
+  .tb{font-size:22px;padding:12px 20px}
+  #tools{gap:14px}
+  #skip.btn.small{font-size:24px;padding:14px 30px}
+  .btn{font-size:30px;padding:18px 44px}
+  #next{font-size:20px}
+  #box{cursor:default}
+  #heroImg{left:-30px;height:600px}
+  #enemyImg{right:40px}
+}
+#toast{position:absolute;left:50%;top:80px;transform:translateX(-50%);padding:12px 30px;background:rgba(184,34,43,.85);color:#fff;font-size:20px;letter-spacing:.2em;opacity:0;transition:opacity .3s;pointer-events:none;border:1px solid #ffd166}
+</style>
+</head>
+<body>
+<div id="rotate"><div class="ph"></div><div class="t">휴대폰을 가로로 돌려 주세요</div><div class="s">『상사』는 가로 화면 전용입니다.<br>화면 회전 잠금을 풀어 주세요.</div></div>
+<div id="wrap"><div id="stage">
+  <div id="bgA" class="layer"></div>
+  <div id="bgB" class="layer"></div>
+  <video id="video" playsinline preload="auto"></video>
+  <div id="vignette" class="layer"></div>
+
+  <!-- battle -->
+  <div id="battle" class="layer hidden">
+    <img id="heroImg" alt="">
+    <img id="enemyImg" alt="">
+    <canvas id="bcanvas" width="1600" height="900"></canvas>
+    <div id="bui">
+      <div class="hud l"><div class="nm">설아 <small>신기(神氣)</small></div><div class="bar"><i id="hpHero" style="width:100%"></i><b id="hpHeroT">100</b></div></div>
+      <div class="hud r"><div class="nm" id="enName">원귀 <small>한(恨)</small></div><div class="bar"><i id="hpEn" style="width:100%"></i><b id="hpEnT">100</b></div></div>
+      <div id="combo"><div class="c">0</div><div class="l">장단</div></div>
+      <div id="judge"></div>
+      <div id="bmsg"></div>
+    </div>
+    <div id="lanes"></div>
+    <div id="cutin"><div class="t"></div></div>
+    <div id="bstart" class="hidden"><div class="en"></div><div class="ln"></div><div class="keys"></div><div class="help"></div><button class="btn small" id="bgo">굿을 시작한다</button></div>
+  </div>
+
+  <!-- dialog -->
+  <div id="dlg" class="layer hidden">
+    <img class="por left" id="porL" alt="">
+    <img class="por right" id="porR" alt="">
+    <div id="box"><div id="name"></div><div id="text"></div><div id="next">▼ 계속</div></div>
+    <div id="tools"><button class="tb" id="tAuto">자동</button><button class="tb on" id="tVoice">음성</button><button class="tb" id="tSkip">건너뛰기</button></div>
+  </div>
+  <div id="caption"></div>
+  <button id="skip" class="btn small hidden">컷신 건너뛰기 ▶</button>
+
+  <div id="choice" class="layer hidden"></div>
+
+  <div id="chapter" class="layer hidden"><div class="card"><div class="n"></div><div class="t"></div><div class="line"></div><div class="seal">굿</div></div></div>
+
+  <div id="credits" class="layer hidden"></div>
+
+  <div id="title" class="layer hidden">
+    <div class="han">상사<span>·</span>相思</div>
+    <div class="sub">청평사의 뱀</div>
+    <div class="tag">CHEONGPYEONGSA · THE LOVESICK SERPENT</div>
+    <div class="menu">
+      <button class="btn" id="mStart">처음부터</button>
+      <button class="btn" id="mCont">이어서 — <span id="mContLabel"></span></button>
+      <button class="btn" id="mChap">장(章) 선택</button>
+      <button class="btn" id="mGallery">오방 기술 갤러리</button>
+      <button class="btn" id="mDiff">난이도 — <span id="mDiffLabel">보통</span></button>
+    </div>
+    <div id="credit">원작 설화 · 청평사 공주와 상사뱀<br>제작 · 코코딩랩 빛나 × Claude<br>이미지 GPT Image 2 · 영상 Seedance 2.5 · 음악 Sonilo · 음성 Qwen TTS (Higgsfield)</div>
+  </div>
+
+  <div id="flash" class="layer"></div>
+  <div id="grain" class="layer"></div>
+  <div id="toast"></div>
+  <div id="load" class="layer"><div class="t">상사 · 相思</div><div class="b"><i id="loadBar"></i></div><div class="s" id="loadS">불러오는 중</div><button class="btn go hidden" id="loadGo">시작 (소리 켜기)</button></div>
+  <div id="fade" class="layer"></div>
+</div></div>
+<script src="story.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

@@ -46,8 +46,8 @@ const diff = () => DIFF[save.diff] || DIFF.normal;
 
 /* ───────── audio ───────── */
 const Audio_ = {
-  bgm:null, bgmName:null, vol:{bgm:.55, sfx:.9, voice:1},
-  sfx:{}, voiceEl:null, unlocked:false,
+  bgm:null, bgmName:null, vol:{bgm:.34, sfx:.8, voice:1},
+  sfx:{}, voiceEl:null, unlocked:false, duckLv:1,
   play(name, {loop=true, fade=900}={}) {
     if (this.bgmName === name) return;
     const old = this.bgm;
@@ -57,25 +57,39 @@ const Audio_ = {
     a.play().catch(()=>{});
     this.bgm=a; this.bgmName=name;
     const t0=performance.now();
-    const step=()=>{ const k=clamp((performance.now()-t0)/fade,0,1); a.volume=this.vol.bgm*k; if(k<1&&this.bgm===a) requestAnimationFrame(step); };
+    const step=()=>{ const k=clamp((performance.now()-t0)/fade,0,1); a.volume=this.vol.bgm*this.duckLv*k; if(k<1&&this.bgm===a) requestAnimationFrame(step); };
     step();
   },
   fadeOut(a, ms){ const v0=a.volume, t0=performance.now();
     const step=()=>{ const k=clamp((performance.now()-t0)/ms,0,1); a.volume=v0*(1-k); if(k<1) requestAnimationFrame(step); else {a.pause(); a.src="";} }; step(); },
-  duck(on){ if(this.bgm) this.bgm.volume = this.vol.bgm*(on?.35:1); },
+  // 대사가 나오는 동안 음악을 눌러 준다 (뚝 끊지 않고 램프)
+  duck(on, ms=240){
+    this.duckLv = on ? .22 : 1;
+    const a=this.bgm; if(!a) return;
+    const id = (this._duckId=(this._duckId||0)+1);        // 앞선 램프를 무효화
+    const v0=a.volume, v1=this.vol.bgm*this.duckLv, t0=performance.now();
+    const step=()=>{ if(this.bgm!==a || this._duckId!==id) return;
+      const k=clamp((performance.now()-t0)/ms,0,1);
+      a.volume=v0+(v1-v0)*k; if(k<1) requestAnimationFrame(step); };
+    step();
+  },
   sfx_(name, vol=1){ const a=new Audio(AUD+"sfx/"+name+".mp3"); a.volume=this.vol.sfx*vol; a.play().catch(()=>{}); return a; },
   voice(id){ this.stopVoice(); if(!settings.voice||!id) return null;
     const a=new Audio(AUD+"voice/"+id+".mp3"); a.volume=0; this.voiceEl=a; a.play().catch(()=>{});
+    this.duck(true);                                   // 말하는 동안 음악을 낮춘다
+    a.onended=()=>{ if(this.voiceEl===a){ this.voiceEl=null; this.duck(false, 600); } };
     // 짧은 페이드인 — 앞머리가 툭 튀지 않게
     const t0=performance.now(), V=this.vol.voice;
     const fin=()=>{ const k=clamp((performance.now()-t0)/70,0,1); if(this.voiceEl!==a) return; a.volume=V*k; if(k<1) requestAnimationFrame(fin); };
     fin(); return a; },
   // 대사를 넘길 때 소리를 뚝 끊지 않고 짧게 페이드아웃 (말 중간 잘림 방지)
-  stopVoice(){ const a=this.voiceEl; if(!a) return; this.voiceEl=null;
+  stopVoice(){ const a=this.voiceEl; if(!a) return; this.voiceEl=null; this.duck(false, 600);
     const v0=a.volume, t0=performance.now();
     const step=()=>{ const k=clamp((performance.now()-t0)/130,0,1); a.volume=v0*(1-k);
       if(k<1) requestAnimationFrame(step); else { a.pause(); a.src=""; } }; step(); }
 };
+
+window.__audio = Audio_;   // 볼륨 확인·조정용 핸들
 
 /* ───────── helpers ───────── */
 const bg = { cur:"A" };
